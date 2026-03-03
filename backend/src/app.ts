@@ -7,6 +7,7 @@ import { notFoundHandler, errorHandler } from "./middlewares/errorHandler";
 // Module routes
 import userRoutes from "./modules/users/user.routes";
 import serviceRoutes from "./modules/services/service.routes";
+import uploadRoutes from "./modules/uploads/upload.routes";
 
 const app: Application = express();
 
@@ -26,6 +27,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/services", serviceRoutes);
+app.use("/api/uploads", uploadRoutes);
 
 // --------------- Error Handling ---------------
 app.use(notFoundHandler);
