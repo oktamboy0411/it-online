@@ -10,12 +10,10 @@ import {
   LogOut,
   GraduationCap,
   School,
-  FileQuestion,
-  Layers,
+  Archive,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
+import { useLocation } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -31,52 +29,24 @@ import {
 
 const mainNav = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Sinflar", url: "/classes", icon: School },
-  { title: "Kurslar", url: "/courses", icon: Layers },
+  { title: "Yo'nalishlar", url: "/directions", icon: School },
   { title: "Darslar", url: "/lessons", icon: BookOpen },
   { title: "Topshiriqlar", url: "/assignments", icon: ClipboardList },
-  { title: "Baholar", url: "/grades", icon: BarChart3 },
-  { title: "Testlar", url: "/quizzes", icon: FileQuestion },
   { title: "Jadval", url: "/schedule", icon: Calendar },
+  { title: "Baholar", url: "/grades", icon: BarChart3 },
+  { title: "Jonli dars", url: "/live", icon: Video },
+  { title: "Bepul kurslar", url: "/courses", icon: PlayCircle },
+  { title: "Bildirishnomalar", url: "/notifications", icon: Bell },
 ];
 
-const secondaryNav = [
-  { title: "Jonli dars", url: "/live", icon: Video },
-  { title: "Bepul kurslar", url: "/free-courses", icon: PlayCircle },
-  { title: "Bildirishnomalar", url: "/notifications", icon: Bell },
+const bottomNav = [
+  { title: "Arxiv", url: "/archive", icon: Archive },
 ];
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
-  const navigate = useNavigate();
-  const { signOut, profile } = useAuth();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/login");
-  };
-
-  const renderNavItems = (items: typeof mainNav) =>
-    items.map((item) => {
-      const active = location.pathname === item.url || (item.url !== "/" && location.pathname.startsWith(item.url));
-      return (
-        <SidebarMenuItem key={item.title}>
-          <SidebarMenuButton asChild isActive={active}>
-            <NavLink
-              to={item.url}
-              end={item.url === "/"}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-sidebar-accent"
-              activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-            >
-              <item.icon className="h-[18px] w-[18px] shrink-0" />
-              {!collapsed && <span>{item.title}</span>}
-            </NavLink>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      );
-    });
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
@@ -85,36 +55,67 @@ export function AppSidebar() {
           <GraduationCap className="h-5 w-5 text-primary-foreground" />
         </div>
         {!collapsed && (
-          <span className="text-lg font-semibold text-foreground tracking-tight">Raqamli Sinf</span>
+          <span className="text-lg font-semibold text-foreground tracking-tight">
+            Raqamli Sinf
+          </span>
         )}
       </div>
 
       <SidebarContent className="pt-2">
         <SidebarGroup>
-          <SidebarGroupLabel>{!collapsed && "Asosiy"}</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>{renderNavItems(mainNav)}</SidebarMenu>
+            <SidebarMenu>
+              {mainNav.map((item) => {
+                const active = location.pathname === item.url || (item.url !== "/" && location.pathname.startsWith(item.url));
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={active}>
+                      <NavLink
+                        to={item.url}
+                        end={item.url === "/"}
+                        className="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-sidebar-accent"
+                        activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                      >
+                        <item.icon className="h-[18px] w-[18px] shrink-0" />
+                        {!collapsed && <span>{item.title}</span>}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
           <SidebarGroupLabel>{!collapsed && "Boshqa"}</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>{renderNavItems(secondaryNav)}</SidebarMenu>
+            <SidebarMenu>
+              {bottomNav.map((item) => {
+                const active = location.pathname === item.url;
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={active}>
+                      <NavLink
+                        to={item.url}
+                        end
+                        className="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-sidebar-accent"
+                        activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                      >
+                        <item.icon className="h-[18px] w-[18px] shrink-0" />
+                        {!collapsed && <span>{item.title}</span>}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border p-3">
-        {!collapsed && profile && (
-          <div className="px-3 py-2 mb-1">
-            <p className="text-sm font-medium text-foreground truncate">{profile.full_name}</p>
-          </div>
-        )}
-        <button
-          onClick={handleSignOut}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground"
-        >
+        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground">
           <LogOut className="h-[18px] w-[18px] shrink-0" />
           {!collapsed && <span>Chiqish</span>}
         </button>

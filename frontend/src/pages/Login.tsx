@@ -1,42 +1,18 @@
 import { useState } from "react";
-import { GraduationCap, Eye, EyeOff, Loader2 } from "lucide-react";
+import { GraduationCap, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/context/AuthContext";
-import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState<"student" | "teacher">("student");
   const navigate = useNavigate();
-  const { signIn, signUp } = useAuth();
-  const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      if (isLogin) {
-        const { error } = await signIn(email, password);
-        if (error) throw error;
-        navigate("/");
-      } else {
-        const { error } = await signUp(email, password, fullName, role);
-        if (error) throw error;
-        toast({ title: "Muvaffaqiyatli!", description: "Ro'yxatdan o'tdingiz. Emailingizni tasdiqlang." });
-      }
-    } catch (err: any) {
-      toast({ title: "Xatolik", description: err.message, variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
+    navigate("/");
   };
 
   return (
@@ -76,18 +52,26 @@ const Login = () => {
             {!isLogin && (
               <div className="space-y-1.5">
                 <Label htmlFor="name">To'liq ism</Label>
-                <Input id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Ismingizni kiriting" required />
+                <Input id="name" placeholder="Ismingizni kiriting" />
               </div>
             )}
             <div className="space-y-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@example.com" required />
+              <Input id="email" type="email" placeholder="email@example.com" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="password">Parol</Label>
               <div className="relative">
-                <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
@@ -97,20 +81,24 @@ const Login = () => {
                 <Label htmlFor="role">Rol</Label>
                 <select
                   id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value as "student" | "teacher")}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   <option value="student">O'quvchi</option>
                   <option value="teacher">O'qituvchi</option>
                 </select>
               </div>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+            <Button type="submit" className="w-full active:scale-[0.98] transition-transform">
               {isLogin ? "Kirish" : "Ro'yxatdan o'tish"}
             </Button>
           </form>
+
+          {isLogin && (
+            <p className="text-center text-xs text-muted-foreground mt-4">
+              Parolni unutdingizmi?{" "}
+              <button className="text-primary hover:underline">Tiklash</button>
+            </p>
+          )}
         </div>
       </div>
     </div>

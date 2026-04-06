@@ -1,61 +1,46 @@
 import { AppLayout } from "@/components/AppLayout";
-import { Play, Clock, Users, Star, Layers } from "lucide-react";
+import { Play, Clock, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+
+const courses = [
+  { id: 1, title: "Python dasturlash — boshlang'ich", lessons: 12, students: 1240, rating: 4.8, duration: "6 soat" },
+  { id: 2, title: "Web dasturlash asoslari (HTML, CSS, JS)", lessons: 18, students: 980, rating: 4.7, duration: "9 soat" },
+  { id: 3, title: "Informatika olimpiadalariga tayyorlanish", lessons: 15, students: 650, rating: 4.9, duration: "8 soat" },
+  { id: 4, title: "Scratch bilan dasturlash (bolalar uchun)", lessons: 10, students: 2100, rating: 4.6, duration: "4 soat" },
+  { id: 5, title: "C++ dasturlash tili", lessons: 20, students: 430, rating: 4.5, duration: "10 soat" },
+  { id: 6, title: "Kiberhavfsizlik asoslari", lessons: 8, students: 780, rating: 4.4, duration: "3.5 soat" },
+];
 
 const FreeCourses = () => {
-  const navigate = useNavigate();
-
-  const { data: courses = [], isLoading } = useQuery({
-    queryKey: ["free-courses"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("courses")
-        .select("*, lessons(id), profiles!courses_teacher_id_fkey(full_name)")
-        .eq("is_free", true)
-        .eq("is_published", true)
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-  });
-
   return (
     <AppLayout title="Bepul kurslar">
-      <div className="space-y-5">
-        {isLoading ? (
-          <div className="flex justify-center py-20"><div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" /></div>
-        ) : courses.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground animate-reveal">
-            <Layers className="h-10 w-10 mb-3 opacity-40" />
-            <p className="text-sm">Hali bepul kurslar mavjud emas</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {courses.map((course: any, i: number) => (
-              <div
-                key={course.id}
-                onClick={() => navigate(`/courses/${course.id}`)}
-                className={`bg-card rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer animate-reveal animate-reveal-delay-${Math.min(i, 4)}`}
-              >
-                <div className="aspect-[2/1] bg-gradient-to-br from-primary/10 via-secondary to-primary/5 flex items-center justify-center">
-                  <Play className="h-8 w-8 text-primary/40" />
-                </div>
-                <div className="p-4 space-y-3">
-                  <h3 className="font-semibold text-sm leading-snug">{course.title}</h3>
-                  {course.description && <p className="text-xs text-muted-foreground line-clamp-2">{course.description}</p>}
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    <span>{course.lessons?.length ?? 0} dars</span>
-                    {course.profiles?.full_name && <span>• {course.profiles.full_name}</span>}
-                  </div>
-                  <Button size="sm" variant="outline" className="text-xs w-full">Boshlash</Button>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        {courses.map((course, i) => (
+          <div
+            key={course.id}
+            className={`bg-card rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-shadow animate-reveal animate-reveal-delay-${Math.min(i, 4)}`}
+          >
+            <div className="aspect-[2/1] bg-gradient-to-br from-primary/10 via-secondary to-primary/5 flex items-center justify-center">
+              <div className="h-12 w-12 rounded-full bg-primary/15 flex items-center justify-center">
+                <Play className="h-5 w-5 text-primary ml-0.5" />
               </div>
-            ))}
+            </div>
+            <div className="p-4 space-y-3">
+              <h3 className="font-semibold text-sm leading-snug">{course.title}</h3>
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{course.duration}</span>
+                <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{course.students}</span>
+                <span className="flex items-center gap-1"><Star className="h-3.5 w-3.5 text-warning fill-warning" />{course.rating}</span>
+              </div>
+              <div className="flex items-center justify-between pt-1">
+                <span className="text-xs text-muted-foreground">{course.lessons} dars</span>
+                <Button size="sm" variant="outline" className="text-xs active:scale-[0.97] transition-transform">
+                  Boshlash
+                </Button>
+              </div>
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </AppLayout>
   );

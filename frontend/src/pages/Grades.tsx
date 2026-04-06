@@ -1,78 +1,71 @@
 import { AppLayout } from "@/components/AppLayout";
-import { BarChart3 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/context/AuthContext";
+
+const students = [
+  { name: "Sardor Aliyev", dailyMarks: [85, 90, 78, 92, 88], avg: 86.6 },
+  { name: "Dilnoza Karimova", dailyMarks: [92, 95, 88, 90, 94], avg: 91.8 },
+  { name: "Javohir Toshmatov", dailyMarks: [70, 75, 82, 68, 77], avg: 74.4 },
+  { name: "Malika Raximova", dailyMarks: [88, 84, 90, 86, 92], avg: 88.0 },
+  { name: "Azizbek Nurmatov", dailyMarks: [65, 72, 60, 74, 68], avg: 67.8 },
+  { name: "Nodira Xasanova", dailyMarks: [95, 98, 92, 96, 94], avg: 95.0 },
+];
+
+const days = ["Dush", "Sesh", "Chor", "Pay", "Juma"];
 
 function gradeColor(grade: number) {
-  if (grade >= 5) return "text-success font-semibold";
-  if (grade >= 4) return "text-primary font-medium";
-  if (grade >= 3) return "text-warning font-medium";
+  if (grade >= 90) return "text-success font-semibold";
+  if (grade >= 75) return "text-primary font-medium";
+  if (grade >= 60) return "text-warning font-medium";
   return "text-destructive font-medium";
 }
 
+function avgBadge(avg: number) {
+  if (avg >= 90) return "bg-success/10 text-success";
+  if (avg >= 75) return "bg-primary/10 text-primary";
+  if (avg >= 60) return "bg-warning/10 text-warning";
+  return "bg-destructive/10 text-destructive";
+}
+
 const Grades = () => {
-  const { role, user } = useAuth();
-
-  const { data: submissions = [], isLoading } = useQuery({
-    queryKey: ["submissions"],
-    queryFn: async () => {
-      let query = supabase
-        .from("submissions")
-        .select("*, assignments(title, lessons(title, courses(title))), profiles!submissions_student_id_fkey(full_name)")
-        .order("submitted_at", { ascending: false });
-
-      if (role === "student") {
-        query = query.eq("student_id", user!.id);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!user,
-  });
-
   return (
     <AppLayout title="Baholar">
-      <div className="space-y-4">
-        {isLoading ? (
-          <div className="flex justify-center py-20"><div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" /></div>
-        ) : submissions.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground animate-reveal">
-            <BarChart3 className="h-10 w-10 mb-3 opacity-40" />
-            <p className="text-sm">Hali baholar mavjud emas</p>
-          </div>
-        ) : (
-          <div className="bg-card rounded-xl border shadow-sm overflow-hidden animate-reveal">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b bg-secondary/50">
-                  {role !== "student" && <th className="px-4 py-3 text-left font-medium text-muted-foreground">O'quvchi</th>}
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Topshiriq</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Kurs</th>
-                  <th className="px-4 py-3 text-center font-medium text-muted-foreground">Baho</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Fikr</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Sana</th>
-                </tr>
-              </thead>
-              <tbody>
-                {submissions.map((s: any) => (
-                  <tr key={s.id} className="border-b last:border-0">
-                    {role !== "student" && <td className="px-4 py-3 font-medium">{s.profiles?.full_name || "—"}</td>}
-                    <td className="px-4 py-3">{s.assignments?.title || "—"}</td>
-                    <td className="px-4 py-3 text-muted-foreground text-xs">{s.assignments?.lessons?.courses?.title || "—"}</td>
-                    <td className={`px-4 py-3 text-center tabular-nums ${s.grade ? gradeColor(s.grade) : "text-muted-foreground"}`}>
-                      {s.grade ?? "—"}
-                    </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground max-w-[200px] truncate">{s.feedback || "—"}</td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">{new Date(s.submitted_at).toLocaleDateString("uz")}</td>
-                  </tr>
+      <div className="bg-card rounded-xl border shadow-sm overflow-hidden animate-reveal">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-secondary/50">
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">O'quvchi</th>
+                {days.map((d) => (
+                  <th key={d} className="px-4 py-3 text-center font-medium text-muted-foreground">{d}</th>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                <th className="px-4 py-3 text-center font-medium text-muted-foreground">O'rtacha</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((s, i) => (
+                <tr key={s.name} className={`border-b last:border-0 animate-reveal animate-reveal-delay-${Math.min(i, 4)}`}>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center text-xs font-medium text-secondary-foreground">
+                        {s.name.split(" ").map(n => n[0]).join("")}
+                      </div>
+                      <span className="font-medium">{s.name}</span>
+                    </div>
+                  </td>
+                  {s.dailyMarks.map((m, j) => (
+                    <td key={j} className={`px-4 py-3 text-center tabular-nums ${gradeColor(m)}`}>
+                      {m}
+                    </td>
+                  ))}
+                  <td className="px-4 py-3 text-center">
+                    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold tabular-nums ${avgBadge(s.avg)}`}>
+                      {s.avg.toFixed(1)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </AppLayout>
   );

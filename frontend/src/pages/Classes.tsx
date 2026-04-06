@@ -1,127 +1,167 @@
 import { useState } from "react";
 import { AppLayout } from "@/components/AppLayout";
-import { Plus, Users, Pencil, School } from "lucide-react";
+import { useClassesContext } from "@/context/ClassesContext";
+import { useNavigate } from "react-router-dom";
+import { Plus, Pencil, Users, Archive, FolderOpen } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/context/AuthContext";
 
-const ClassesPage = () => {
+const Classes = () => {
+  const { activeDirections, addDirection, updateDirection, archiveDirection } = useClassesContext();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const { role } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
+  const [archiveTarget, setArchiveTarget] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
-  const [name, setName] = useState("");
+  const [form, setForm] = useState({ name: "", description: "" });
 
-  const { data: classes = [], isLoading } = useQuery({
-    queryKey: ["classes"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("classes")
-        .select("*, class_students(id, is_active)")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-  });
+  const openCreate = () => {
+    setEditId(null);
+    setForm({ name: "", description: "" });
+    setDialogOpen(true);
+  };
 
-  const saveMutation = useMutation({
-    mutationFn: async () => {
-      if (editId) {
-        const { error } = await supabase.from("classes").update({ name }).eq("id", editId);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from("classes").insert({ name });
-        if (error) throw error;
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["classes"] });
-      setDialogOpen(false);
-    },
-  });
+  const openEdit = (id: string) => {
+    const dir = activeDirections.find((d) => d.id === id);
+    if (!dir) return;
+    setEditId(id);
+    setForm({ name: dir.name, description: dir.description || "" });
+    setDialogOpen(true);
+  };
 
-  const canManage = role === "admin" || role === "teacher";
+  const handleSave = () => {
+    if (!form.name.trim()) return;
+    if (editId) {
+      updateDirection(editId, form);
+    } else {
+      addDirection(form);
+    }
+    setDialogOpen(false);
+  };
 
-  const openAdd = () => { setEditId(null); setName(""); setDialogOpen(true); };
-  const openEdit = (id: string, currentName: string) => { setEditId(id); setName(currentName); setDialogOpen(true); };
+  const confirmArchive = (id: string) => {
+    setArchiveTarget(id);
+    setArchiveDialogOpen(true);
+  };
+
+  const handleArchive = () => {
+    if (archiveTarget) archiveDirection(archiveTarget);
+    setArchiveDialogOpen(false);
+    setArchiveTarget(null);
+  };
 
   return (
-    <AppLayout title="Sinflar">
+    <AppLayout title="Yo'nalishlar">
       <div className="space-y-5">
         <div className="flex items-center justify-between animate-reveal">
-          <p className="text-sm text-muted-foreground">Barcha faol sinflar</p>
-          {canManage && (
-            <Button onClick={openAdd} size="sm" className="gap-1.5">
-              <Plus className="h-4 w-4" /> Yangi sinf
-            </Button>
-          )}
+          <p className="text-sm text-muted-foreground">
+            Jami {activeDirections.length} ta faol yo'nalish
+          </p>
+          <Button onClick={openCreate} size="sm" className="gap-1.5">
+            <Plus className="h-4 w-4" />
+            Yangi yo'nalish
+          </Button>
         </div>
 
-        {isLoading ? (
-          <div className="flex justify-center py-20"><div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" /></div>
-        ) : classes.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground animate-reveal">
-            <School className="h-10 w-10 mb-3 opacity-40" />
-            <p className="text-sm">Hali sinflar mavjud emas</p>
-            {canManage && <Button variant="outline" size="sm" className="mt-3" onClick={openAdd}>Sinf qo'shish</Button>}
-          </div>
-        ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 animate-reveal animate-reveal-delay-1">
-            {classes.map((cls: any) => {
-              const activeCount = cls.class_students?.filter((s: any) => s.is_active).length ?? 0;
-              return (
-                <div
-                  key={cls.id}
-                  onClick={() => navigate(`/classes/${cls.id}`)}
-                  className="group relative bg-card rounded-xl border shadow-sm p-5 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all active:scale-[0.98]"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <School className="h-5 w-5 text-primary" />
-                      <h3 className="font-semibold text-foreground">{cls.name}</h3>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {activeDirections.map((dir, i) => {
+            const totalGroups = dir.groups.filter((g) => g.status === "active").length;
+            const totalStudents = dir.groups.reduce(
+              (sum, g) => sum + g.students.filter((s) => s.status === "active").length,
+              0
+            );
+            return (
+              <div
+                key={dir.id}
+                className="group bg-card border rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer animate-reveal"
+                style={{ animationDelay: `${i * 60}ms` }}
+                onClick={() => navigate(`/directions/${dir.id}`)}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <FolderOpen className="h-5 w-5 text-primary" />
                     </div>
-                    {canManage && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); openEdit(cls.id, cls.name); }}
-                        className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <Pencil className="h-3.5 w-3.5" />
-                      </button>
-                    )}
+                    <div>
+                      <h3 className="font-semibold text-foreground">{dir.name}</h3>
+                      {dir.description && (
+                        <p className="text-xs text-muted-foreground">{dir.description}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" /> {activeCount} o'quvchi</span>
+                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); openEdit(dir.id); }}
+                      className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); confirmArchive(dir.id); }}
+                      className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+                    >
+                      <Archive className="h-3.5 w-3.5" />
+                    </button>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        )}
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Users className="h-3.5 w-3.5" />
+                    {totalGroups} guruh · {totalStudents} o'quvchi
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
+        {/* Create / Edit dialog */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{editId ? "Sinfni tahrirlash" : "Yangi sinf yaratish"}</DialogTitle>
-              <DialogDescription>{editId ? "Sinf nomini yangilang" : "Yangi sinf uchun nom kiriting (masalan: 7-A)"}</DialogDescription>
+              <DialogTitle>{editId ? "Yo'nalishni tahrirlash" : "Yangi yo'nalish yaratish"}</DialogTitle>
+              <DialogDescription>
+                {editId ? "Yo'nalish ma'lumotlarini yangilang" : "Yangi yo'nalish uchun ma'lumotlarni kiriting"}
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="space-y-2">
-                <Label>Sinf nomi</Label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Masalan: 7-A" />
+                <Label>Nomi</Label>
+                <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Masalan: 2010-2012" />
+              </div>
+              <div className="space-y-2">
+                <Label>Tavsif</Label>
+                <Input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Masalan: 2010-2012 yillarda tug'ilganlar" />
               </div>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setDialogOpen(false)}>Bekor qilish</Button>
-              <Button onClick={() => saveMutation.mutate()} disabled={!name.trim() || saveMutation.isPending}>
-                {editId ? "Saqlash" : "Yaratish"}
-              </Button>
+              <Button onClick={handleSave}>{editId ? "Saqlash" : "Yaratish"}</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Archive confirmation */}
+        <Dialog open={archiveDialogOpen} onOpenChange={setArchiveDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Yo'nalishni arxivlash</DialogTitle>
+              <DialogDescription>
+                Bu yo'nalish arxivga ko'chiriladi va barcha guruhlar hamda o'quvchilarning faoliyati tugatiladi.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setArchiveDialogOpen(false)}>Bekor qilish</Button>
+              <Button variant="destructive" onClick={handleArchive}>Arxivlash</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -130,4 +170,4 @@ const ClassesPage = () => {
   );
 };
 
-export default ClassesPage;
+export default Classes;
