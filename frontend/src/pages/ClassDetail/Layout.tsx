@@ -11,19 +11,13 @@ import {
   BookOpen,
   Users,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ClassNumber, Quarter, Student, Subject } from "@/types/class";
+import GroupFormDialog from "@/models/GroupFormDialog";
+import GroupArchiveDialog from "@/models/GroupArchiveDialog";
+import StudentFormDialog from "@/models/StudentFormDialog";
+import StudentDeactivateDialog from "@/models/StudentDeactivateDialog";
 
 export interface ClassDetailOutletContext {
   isArchived: boolean;
@@ -380,67 +374,20 @@ const ClassDetailLayout = () => {
             </div>
           )}
 
-          <Dialog open={groupDialogOpen} onOpenChange={setGroupDialogOpen}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>
-                  {editGroupId ? "Guruhni tahrirlash" : "Yangi guruh yaratish"}
-                </DialogTitle>
-                <DialogDescription>
-                  {editGroupId
-                    ? "Guruh nomini yangilang"
-                    : "Yangi guruh uchun nom kiriting"}
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4 py-2">
-                <div className="space-y-2">
-                  <Label>Guruh nomi</Label>
-                  <Input
-                    value={groupName}
-                    onChange={(e) => setGroupName(e.target.value)}
-                    placeholder="Masalan: A"
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setGroupDialogOpen(false)}
-                >
-                  Bekor qilish
-                </Button>
-                <Button onClick={handleSaveGroup}>
-                  {editGroupId ? "Saqlash" : "Yaratish"}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <GroupFormDialog
+            open={groupDialogOpen}
+            onOpenChange={setGroupDialogOpen}
+            editGroupId={editGroupId}
+            groupName={groupName}
+            setGroupName={setGroupName}
+            onSave={handleSaveGroup}
+          />
 
-          <Dialog
+          <GroupArchiveDialog
             open={archiveGroupDialogOpen}
             onOpenChange={setArchiveGroupDialogOpen}
-          >
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Guruhni arxivlash</DialogTitle>
-                <DialogDescription>
-                  Bu guruh arxivga ko'chiriladi va barcha o'quvchilarning
-                  faoliyati tugatiladi.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setArchiveGroupDialogOpen(false)}
-                >
-                  Bekor qilish
-                </Button>
-                <Button variant="destructive" onClick={handleArchiveGroup}>
-                  Arxivlash
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+            onArchive={handleArchiveGroup}
+          />
         </div>
       </AppLayout>
     );
@@ -528,94 +475,20 @@ const ClassDetailLayout = () => {
           }
         />
 
-        <Dialog open={studentDialogOpen} onOpenChange={setStudentDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>
-                {editStudentId
-                  ? "O'quvchini tahrirlash"
-                  : "Yangi o'quvchi qo'shish"}
-              </DialogTitle>
-              <DialogDescription>
-                {editStudentId
-                  ? "O'quvchi ma'lumotlarini yangilang"
-                  : "O'quvchi uchun ma'lumotlarni kiriting"}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-2">
-              <div className="space-y-2">
-                <Label>Ism</Label>
-                <Input
-                  value={studentForm.firstName}
-                  onChange={(e) =>
-                    setStudentForm({
-                      ...studentForm,
-                      firstName: e.target.value,
-                    })
-                  }
-                  placeholder="Masalan: Alisher"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Familiya</Label>
-                <Input
-                  value={studentForm.lastName}
-                  onChange={(e) =>
-                    setStudentForm({ ...studentForm, lastName: e.target.value })
-                  }
-                  placeholder="Masalan: Toshmatov"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Telefon</Label>
-                <Input
-                  value={studentForm.phone}
-                  onChange={(e) =>
-                    setStudentForm({ ...studentForm, phone: e.target.value })
-                  }
-                  placeholder="+998901234567"
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setStudentDialogOpen(false)}
-              >
-                Bekor qilish
-              </Button>
-              <Button onClick={handleSaveStudent}>
-                {editStudentId ? "Saqlash" : "Qo'shish"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <StudentFormDialog
+          open={studentDialogOpen}
+          onOpenChange={setStudentDialogOpen}
+          editStudentId={editStudentId}
+          studentForm={studentForm}
+          setStudentForm={setStudentForm}
+          onSave={handleSaveStudent}
+        />
 
-        <Dialog
+        <StudentDeactivateDialog
           open={deactivateDialogOpen}
           onOpenChange={setDeactivateDialogOpen}
-        >
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>O'quvchi faoliyatini tugatish</DialogTitle>
-              <DialogDescription>
-                Bu o'quvchining faoliyati tugatiladi. O'quvchi o'chirilmaydi,
-                lekin faol ro'yxatdan chiqariladi.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setDeactivateDialogOpen(false)}
-              >
-                Bekor qilish
-              </Button>
-              <Button variant="destructive" onClick={handleDeactivate}>
-                Faoliyatni tugatish
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          onDeactivate={handleDeactivate}
+        />
       </div>
     </AppLayout>
   );

@@ -3,20 +3,13 @@ import { AppLayout } from "@/components/AppLayout";
 import { useClassesContext } from "@/context/ClassesContext";
 import { useNavigate } from "react-router-dom";
 import { Plus, Pencil, Users, Archive, FolderOpen } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import DirectionFormDialog from "@/models/DirectionFormDialog";
+import DirectionArchiveDialog from "@/models/DirectionArchiveDialog";
 
 const Classes = () => {
-  const { activeDirections, addDirection, updateDirection, archiveDirection } = useClassesContext();
+  const { activeDirections, addDirection, updateDirection, archiveDirection } =
+    useClassesContext();
   const navigate = useNavigate();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
@@ -74,10 +67,13 @@ const Classes = () => {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {activeDirections.map((dir, i) => {
-            const totalGroups = dir.groups.filter((g) => g.status === "active").length;
+            const totalGroups = dir.groups.filter(
+              (g) => g.status === "active",
+            ).length;
             const totalStudents = dir.groups.reduce(
-              (sum, g) => sum + g.students.filter((s) => s.status === "active").length,
-              0
+              (sum, g) =>
+                sum + g.students.filter((s) => s.status === "active").length,
+              0,
             );
             return (
               <div
@@ -92,21 +88,31 @@ const Classes = () => {
                       <FolderOpen className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground">{dir.name}</h3>
+                      <h3 className="font-semibold text-foreground">
+                        {dir.name}
+                      </h3>
                       {dir.description && (
-                        <p className="text-xs text-muted-foreground">{dir.description}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {dir.description}
+                        </p>
                       )}
                     </div>
                   </div>
                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
-                      onClick={(e) => { e.stopPropagation(); openEdit(dir.id); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openEdit(dir.id);
+                      }}
                       className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <Pencil className="h-3.5 w-3.5" />
                     </button>
                     <button
-                      onClick={(e) => { e.stopPropagation(); confirmArchive(dir.id); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        confirmArchive(dir.id);
+                      }}
                       className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
                     >
                       <Archive className="h-3.5 w-3.5" />
@@ -124,47 +130,20 @@ const Classes = () => {
           })}
         </div>
 
-        {/* Create / Edit dialog */}
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{editId ? "Yo'nalishni tahrirlash" : "Yangi yo'nalish yaratish"}</DialogTitle>
-              <DialogDescription>
-                {editId ? "Yo'nalish ma'lumotlarini yangilang" : "Yangi yo'nalish uchun ma'lumotlarni kiriting"}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-2">
-              <div className="space-y-2">
-                <Label>Nomi</Label>
-                <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Masalan: 2010-2012" />
-              </div>
-              <div className="space-y-2">
-                <Label>Tavsif</Label>
-                <Input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Masalan: 2010-2012 yillarda tug'ilganlar" />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>Bekor qilish</Button>
-              <Button onClick={handleSave}>{editId ? "Saqlash" : "Yaratish"}</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <DirectionFormDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          editId={editId}
+          form={form}
+          setForm={setForm}
+          onSave={handleSave}
+        />
 
-        {/* Archive confirmation */}
-        <Dialog open={archiveDialogOpen} onOpenChange={setArchiveDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Yo'nalishni arxivlash</DialogTitle>
-              <DialogDescription>
-                Bu yo'nalish arxivga ko'chiriladi va barcha guruhlar hamda o'quvchilarning faoliyati tugatiladi.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setArchiveDialogOpen(false)}>Bekor qilish</Button>
-              <Button variant="destructive" onClick={handleArchive}>Arxivlash</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <DirectionArchiveDialog
+          open={archiveDialogOpen}
+          onOpenChange={setArchiveDialogOpen}
+          onArchive={handleArchive}
+        />
       </div>
     </AppLayout>
   );
