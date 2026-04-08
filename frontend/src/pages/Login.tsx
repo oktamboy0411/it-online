@@ -4,14 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getStoredRole, setStoredRole, type UserRole } from "@/routers";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<UserRole>(getStoredRole);
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setStoredRole(selectedRole);
     navigate("/");
   };
 
@@ -33,7 +36,9 @@ const Login = () => {
             <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 text-sm font-medium py-2 rounded-md transition-all ${
-                isLogin ? "bg-card shadow-sm text-foreground" : "text-muted-foreground"
+                isLogin
+                  ? "bg-card shadow-sm text-foreground"
+                  : "text-muted-foreground"
               }`}
             >
               Kirish
@@ -41,7 +46,9 @@ const Login = () => {
             <button
               onClick={() => setIsLogin(false)}
               className={`flex-1 text-sm font-medium py-2 rounded-md transition-all ${
-                !isLogin ? "bg-card shadow-sm text-foreground" : "text-muted-foreground"
+                !isLogin
+                  ? "bg-card shadow-sm text-foreground"
+                  : "text-muted-foreground"
               }`}
             >
               Ro'yxatdan o'tish
@@ -72,23 +79,33 @@ const Login = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
             </div>
-            {!isLogin && (
-              <div className="space-y-1.5">
-                <Label htmlFor="role">Rol</Label>
-                <select
-                  id="role"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                >
-                  <option value="student">O'quvchi</option>
-                  <option value="teacher">O'qituvchi</option>
-                </select>
-              </div>
-            )}
-            <Button type="submit" className="w-full active:scale-[0.98] transition-transform">
+            <div className="space-y-1.5">
+              <Label htmlFor="role">Rol</Label>
+              <select
+                id="role"
+                value={selectedRole}
+                onChange={(event) =>
+                  setSelectedRole(event.target.value as UserRole)
+                }
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <option value="admin">Admin</option>
+                <option value="teacher">O'qituvchi</option>
+                <option value="student">O'quvchi</option>
+              </select>
+            </div>
+            <Button
+              type="submit"
+              className="w-full active:scale-[0.98] transition-transform"
+            >
               {isLogin ? "Kirish" : "Ro'yxatdan o'tish"}
             </Button>
           </form>
