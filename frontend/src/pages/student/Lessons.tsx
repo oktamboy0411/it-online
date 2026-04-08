@@ -76,4 +76,4 @@ const Lessons = () => {
   );
 };
 
-export default Lessons;
+export { Lessons };

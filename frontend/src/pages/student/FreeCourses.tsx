@@ -46,4 +46,4 @@ const FreeCourses = () => {
   );
 };
 
-export default FreeCourses;
+export { FreeCourses };

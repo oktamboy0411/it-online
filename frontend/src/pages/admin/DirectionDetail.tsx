@@ -13,9 +13,8 @@ import { AppLayout } from "@/components/AppLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useClassesContext } from "@/context/ClassesContext";
-import GroupArchiveDialog from "@/models/GroupArchiveDialog";
-import GroupFormDialog from "@/models/GroupFormDialog";
-
+import { GroupArchiveDialog } from "@/models/GroupArchiveDialog";
+import { GroupFormDialog } from "@/models/GroupFormDialog";
 const DirectionDetail = () => {
   const { directionId } = useParams<{ directionId: string }>();
   const navigate = useNavigate();
@@ -250,4 +249,4 @@ const DirectionDetail = () => {
   );
 };
 
-export default DirectionDetail;
+export { DirectionDetail };

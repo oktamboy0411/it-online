@@ -103,4 +103,4 @@ const LiveClass = () => {
   );
 };
 
-export default LiveClass;
+export { LiveClass };

@@ -42,4 +42,4 @@ const DirectionArchiveDialog = ({
   );
 };
 
-export default DirectionArchiveDialog;
+export { DirectionArchiveDialog };

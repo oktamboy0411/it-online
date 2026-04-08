@@ -94,4 +94,4 @@ const StudentFormDialog = ({
   );
 };
 
-export default StudentFormDialog;
+export { StudentFormDialog };

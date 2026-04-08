@@ -4,9 +4,8 @@ import { useClassesContext } from "@/context/ClassesContext";
 import { useNavigate } from "react-router-dom";
 import { Plus, Pencil, Users, Archive, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import DirectionFormDialog from "@/models/DirectionFormDialog";
-import DirectionArchiveDialog from "@/models/DirectionArchiveDialog";
-
+import { DirectionFormDialog } from "@/models/DirectionFormDialog";
+import { DirectionArchiveDialog } from "@/models/DirectionArchiveDialog";
 const Directions = () => {
   const { activeDirections, addDirection, updateDirection, archiveDirection } =
     useClassesContext();
@@ -149,4 +148,4 @@ const Directions = () => {
   );
 };
 
-export default Directions;
+export { Directions };

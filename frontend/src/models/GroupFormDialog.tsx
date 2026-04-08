@@ -63,4 +63,4 @@ const GroupFormDialog = ({
   );
 };
 
-export default GroupFormDialog;
+export { GroupFormDialog };

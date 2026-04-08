@@ -6,9 +6,8 @@ import { ArrowLeft, BookOpen, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ClassNumber, Quarter, Student, Subject } from "@/types/class";
-import StudentFormDialog from "@/models/StudentFormDialog";
-import StudentDeactivateDialog from "@/models/StudentDeactivateDialog";
-
+import { StudentFormDialog } from "@/models/StudentFormDialog";
+import { StudentDeactivateDialog } from "@/models/StudentDeactivateDialog";
 export interface ClassDetailOutletContext {
   isArchived: boolean;
   isGroupArchived: boolean;
@@ -267,4 +266,4 @@ const ClassDetailLayout = () => {
   );
 };
 
-export default ClassDetailLayout;
+export { ClassDetailLayout };

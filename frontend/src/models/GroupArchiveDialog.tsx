@@ -42,4 +42,4 @@ const GroupArchiveDialog = ({
   );
 };
 
-export default GroupArchiveDialog;
+export { GroupArchiveDialog };

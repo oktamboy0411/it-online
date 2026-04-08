@@ -42,4 +42,4 @@ const StudentDeactivateDialog = ({
   );
 };
 
-export default StudentDeactivateDialog;
+export { StudentDeactivateDialog };

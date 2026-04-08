@@ -77,4 +77,4 @@ const DirectionFormDialog = ({
   );
 };
 
-export default DirectionFormDialog;
+export { DirectionFormDialog };

@@ -155,4 +155,4 @@ const ClassesTab = () => {
   );
 };
 
-export default ClassesTab;
+export { ClassesTab };

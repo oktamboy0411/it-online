@@ -153,4 +153,4 @@ const StudentsTab = () => {
   );
 };
 
-export default StudentsTab;
+export { StudentsTab };

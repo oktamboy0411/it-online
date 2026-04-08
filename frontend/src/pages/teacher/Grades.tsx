@@ -71,4 +71,4 @@ const Grades = () => {
   );
 };
 
-export default Grades;
+export { Grades };

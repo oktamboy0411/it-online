@@ -203,4 +203,4 @@ const Schedule = () => {
   );
 };
 
-export default Schedule;
+export { Schedule };
