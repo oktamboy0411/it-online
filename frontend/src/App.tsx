@@ -15,6 +15,8 @@ import FreeCourses from "./pages/FreeCourses";
 import Notifications from "./pages/Notifications";
 import Classes from "./pages/Classes";
 import ClassDetail from "./pages/ClassDetail";
+import StudentsTab from "./pages/ClassDetail/StudentsTab";
+import ClassesTab from "./pages/ClassDetail/ClassesTab";
 import ArchivePage from "./pages/Archive";
 import NotFound from "./pages/NotFound";
 
@@ -38,7 +40,10 @@ const App = () => (
             <Route path="/courses" element={<FreeCourses />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/directions" element={<Classes />} />
-            <Route path="/directions/:id" element={<ClassDetail />} />
+            <Route path="/directions/:id" element={<ClassDetail />}>
+              <Route path="students" element={<StudentsTab />} />
+              <Route path="classes" element={<ClassesTab />} />
+            </Route>
             <Route path="/archive" element={<ArchivePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
