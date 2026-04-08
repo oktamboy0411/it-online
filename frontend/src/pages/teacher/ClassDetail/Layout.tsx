@@ -40,13 +40,8 @@ const ClassDetailLayout = () => {
   }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const {
-    directions,
-    addStudent,
-    updateStudent,
-    deactivateStudent,
-    setGrade,
-  } = useClassesContext();
+  const { directions, addStudent, updateStudent, deactivateStudent, setGrade } =
+    useClassesContext();
 
   const direction = directions.find((d) => d.id === directionId);
   const selectedGroup = direction?.groups.find((g) => g.id === groupId);
@@ -74,7 +69,11 @@ const ClassDetailLayout = () => {
           <Button
             variant="outline"
             className="mt-4"
-            onClick={() => navigate(directionId ? `/directions/${directionId}` : "/directions")}
+            onClick={() =>
+              navigate(
+                directionId ? `/directions/${directionId}` : "/directions",
+              )
+            }
           >
             Yo'nalishlarga qaytish
           </Button>
@@ -83,13 +82,20 @@ const ClassDetailLayout = () => {
     );
   }
 
-  const activeTab = location.pathname.endsWith("/classes") ? "classes" : "students";
+  const activeTab = location.pathname.endsWith("/classes")
+    ? "classes"
+    : "students";
   const isArchived = direction.status === "archived";
   const isGroupArchived = selectedGroup.status === "archived";
 
-  const activeStudents = selectedGroup.students.filter((s) => s.status === "active");
-  const inactiveStudents = selectedGroup.students.filter((s) => s.status === "inactive");
-  const displayedStudents = studentTab === "active" ? activeStudents : inactiveStudents;
+  const activeStudents = selectedGroup.students.filter(
+    (s) => s.status === "active",
+  );
+  const inactiveStudents = selectedGroup.students.filter(
+    (s) => s.status === "inactive",
+  );
+  const displayedStudents =
+    studentTab === "active" ? activeStudents : inactiveStudents;
   const allStudentsForGrades = activeStudents;
   const subjects = selectedGroup.subjects;
   const grades = selectedGroup.grades;
@@ -184,9 +190,13 @@ const ClassDetailLayout = () => {
                 <h2 className="text-lg font-semibold text-foreground">
                   {selectedGroup.name} guruh
                 </h2>
-                {isGroupArchived && <Badge variant="secondary">Arxivlangan</Badge>}
+                {isGroupArchived && (
+                  <Badge variant="secondary">Arxivlangan</Badge>
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">{direction.name} yo'nalishi</p>
+              <p className="text-xs text-muted-foreground">
+                {direction.name} yo'nalishi
+              </p>
             </div>
           </div>
         </div>
@@ -194,7 +204,9 @@ const ClassDetailLayout = () => {
         <div className="flex gap-1 bg-secondary/50 p-1 rounded-lg w-fit animate-reveal animate-reveal-delay-1">
           <button
             onClick={() =>
-              navigate(`/directions/${direction.id}/groups/${selectedGroup.id}/students`)
+              navigate(
+                `/directions/${direction.id}/groups/${selectedGroup.id}/students`,
+              )
             }
             className={`px-5 py-2 text-sm font-medium rounded-md transition-all active:scale-[0.97] ${
               activeTab === "students"
@@ -208,7 +220,9 @@ const ClassDetailLayout = () => {
           </button>
           <button
             onClick={() =>
-              navigate(`/directions/${direction.id}/groups/${selectedGroup.id}/classes`)
+              navigate(
+                `/directions/${direction.id}/groups/${selectedGroup.id}/classes`,
+              )
             }
             className={`px-5 py-2 text-sm font-medium rounded-md transition-all active:scale-[0.97] ${
               activeTab === "classes"
