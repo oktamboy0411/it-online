@@ -4,7 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClassesProvider } from "@/context/ClassesContext";
-import { getRoutesByRole, useUserRole, type AppRouteConfig } from "@/routers";
+import { getRoutesByRole, useUserRole } from "@/routers";
+import { AppRouteConfig } from "./types";
 
 const queryClient = new QueryClient();
 

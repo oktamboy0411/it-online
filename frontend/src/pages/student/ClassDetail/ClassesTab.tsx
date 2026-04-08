@@ -6,9 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CLASS_NUMBERS, QUARTERS, Quarter } from "@/types/class";
+import type { Quarter } from "@/types/class";
 import { useOutletContext } from "react-router-dom";
 import type { ClassDetailOutletContext } from "./Layout.tsx";
+import { CLASS_NUMBERS, QUARTERS } from "@/data";
 
 const ClassesTab = () => {
   const {
