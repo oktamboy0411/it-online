@@ -1,19 +1,22 @@
 import { Navigate } from "react-router-dom";
-import type { AppRouteConfig } from "./admin.route";
-import { Dashboard } from "@/pages/student/Dashboard";
-import { Lessons } from "@/pages/student/Lessons";
-import { Assignments } from "@/pages/student/Assignments";
-import { Schedule } from "@/pages/student/Schedule";
-import { Grades } from "@/pages/student/Grades";
-import { LiveClass } from "@/pages/student/LiveClass";
-import { FreeCourses } from "@/pages/student/FreeCourses";
-import { Notifications } from "@/pages/student/Notifications";
-import { Directions } from "@/pages/student/Directions";
-import { DirectionDetail } from "@/pages/student/DirectionDetail";
-import { ClassDetailLayout as ClassDetail } from "@/pages/student/ClassDetail";
-import { StudentsTab } from "@/pages/student/ClassDetail/StudentsTab";
-import { ClassesTab } from "@/pages/student/ClassDetail/ClassesTab";
-import { ArchivePage } from "@/pages/student/Archive";
+import { AppRouteConfig } from "@/types";
+import {
+  ArchivePage,
+  Assignments,
+  ClassDetailLayout,
+  ClassesTab,
+  Dashboard,
+  DirectionDetail,
+  Directions,
+  FreeCourses,
+  Grades,
+  Lessons,
+  LiveClass,
+  Notifications,
+  Schedule,
+  StudentsTab,
+} from "@/pages/student";
+
 export const studentRoutes: AppRouteConfig[] = [
   { path: "/", element: <Dashboard /> },
   { path: "/lessons", element: <Lessons /> },
@@ -30,7 +33,7 @@ export const studentRoutes: AppRouteConfig[] = [
   },
   {
     path: "/directions/:directionId/groups/:groupId",
-    element: <ClassDetail />,
+    element: <ClassDetailLayout />,
     children: [
       { path: "", element: <Navigate to="students" replace /> },
       { path: "students", element: <StudentsTab /> },

@@ -1,6 +1,21 @@
 import { Navigate } from "react-router-dom";
 import { AppRouteConfig } from "@/types";
-import { Dashboard } from "@/pages/admin";
+import {
+  ArchivePage,
+  Assignments,
+  ClassDetailLayout,
+  ClassesTab,
+  Dashboard,
+  DirectionDetail,
+  Directions,
+  FreeCourses,
+  Grades,
+  Lessons,
+  LiveClass,
+  Notifications,
+  Schedule,
+  StudentsTab,
+} from "@/pages/admin";
 
 export const adminRoutes: AppRouteConfig[] = [
   { path: "/", element: <Dashboard /> },
@@ -18,7 +33,7 @@ export const adminRoutes: AppRouteConfig[] = [
   },
   {
     path: "/directions/:directionId/groups/:groupId",
-    element: <ClassDetail />,
+    element: <ClassDetailLayout />,
     children: [
       { path: "", element: <Navigate to="students" replace /> },
       { path: "students", element: <StudentsTab /> },

@@ -1,32 +1,22 @@
 import { useEffect, useState } from "react";
-import { adminRoutes, type AppRouteConfig } from "./admin.route";
+import { adminRoutes } from "./admin.route";
 import { studentRoutes } from "./student.route";
 import { teacherRoutes } from "./teacher.route";
-
-export interface AppRouteConfig {
-  path: string;
-  element: JSX.Element;
-  children?: AppRouteConfig[];
-}
+import type { AppRouteConfig } from "@/types";
 
 export type UserRole = "admin" | "teacher" | "student";
+const validRoles: UserRole[] = ["admin", "teacher", "student"];
 
 const ROLE_STORAGE_KEY = "it-online-role";
 const ROLE_CHANGE_EVENT = "it-online-role-change";
-
-const validRoles: UserRole[] = ["admin", "teacher", "student"];
 
 function isUserRole(value: string | null): value is UserRole {
   return value !== null && validRoles.includes(value as UserRole);
 }
 
 export function getStoredRole(): UserRole {
-  if (typeof window === "undefined") {
-    return "admin";
-  }
-
-  const storedValue = window.localStorage.getItem(ROLE_STORAGE_KEY);
-  return isUserRole(storedValue) ? storedValue : "admin";
+  const role = window.localStorage.getItem(ROLE_STORAGE_KEY);
+  return isUserRole(role) ? role : "admin";
 }
 
 export function setStoredRole(role: UserRole) {
@@ -34,6 +24,12 @@ export function setStoredRole(role: UserRole) {
   window.dispatchEvent(
     new CustomEvent<UserRole>(ROLE_CHANGE_EVENT, { detail: role }),
   );
+}
+
+export function getRoutesByRole(role: UserRole): AppRouteConfig[] {
+  if (role === "teacher") return teacherRoutes;
+  if (role === "student") return studentRoutes;
+  return adminRoutes;
 }
 
 export function useUserRole() {
@@ -64,17 +60,3 @@ export function useUserRole() {
 
   return [role, setStoredRole] as const;
 }
-
-export function getRoutesByRole(role: UserRole): AppRouteConfig[] {
-  switch (role) {
-    case "teacher":
-      return teacherRoutes;
-    case "student":
-      return studentRoutes;
-    case "admin":
-    default:
-      return adminRoutes;
-  }
-}
-
-export type { AppRouteConfig };
