@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,7 +13,8 @@ import Grades from "./pages/Grades";
 import LiveClass from "./pages/LiveClass";
 import FreeCourses from "./pages/FreeCourses";
 import Notifications from "./pages/Notifications";
-import Classes from "./pages/Classes";
+import Directions from "./pages/Directions";
+import DirectionDetail from "./pages/DirectionDetail";
 import ClassDetail from "./pages/ClassDetail";
 import StudentsTab from "./pages/ClassDetail/StudentsTab";
 import ClassesTab from "./pages/ClassDetail/ClassesTab";
@@ -39,8 +40,16 @@ const App = () => (
             <Route path="/live" element={<LiveClass />} />
             <Route path="/courses" element={<FreeCourses />} />
             <Route path="/notifications" element={<Notifications />} />
-            <Route path="/directions" element={<Classes />} />
-            <Route path="/directions/:id" element={<ClassDetail />}>
+            <Route path="/directions" element={<Directions />} />
+            <Route
+              path="/directions/:directionId"
+              element={<DirectionDetail />}
+            />
+            <Route
+              path="/directions/:directionId/groups/:groupId"
+              element={<ClassDetail />}
+            >
+              <Route index element={<Navigate to="students" replace />} />
               <Route path="students" element={<StudentsTab />} />
               <Route path="classes" element={<ClassesTab />} />
             </Route>

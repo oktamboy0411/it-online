@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import DirectionFormDialog from "@/models/DirectionFormDialog";
 import DirectionArchiveDialog from "@/models/DirectionArchiveDialog";
 
-const Classes = () => {
+const Directions = () => {
   const { activeDirections, addDirection, updateDirection, archiveDirection } =
     useClassesContext();
   const navigate = useNavigate();
@@ -149,4 +149,4 @@ const Classes = () => {
   );
 };
 
-export default Classes;
+export default Directions;
