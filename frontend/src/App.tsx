@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClassesProvider } from "@/context/ClassesContext";
 import { getRoutesByRole, useUserRole } from "@/routers";
 import { AppRouteConfig } from "./types";
+import { Login } from "./pages/Login";
+import { NotFound } from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -28,7 +30,11 @@ const App = () => {
         <Sonner />
         <ClassesProvider>
           <BrowserRouter>
-            <Routes>{routes.map(renderRoutes)}</Routes>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <>{routes.map(renderRoutes)}</>
+              <Route path="/*" element={<NotFound />} />
+            </Routes>
           </BrowserRouter>
         </ClassesProvider>
       </TooltipProvider>
