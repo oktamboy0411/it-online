@@ -7,12 +7,9 @@ import {
 } from 'typeorm';
 
 export enum UserRole {
-  CEO = 'CEO',
-  ADMIN = 'Admin',
-  STORE_MANAGER = 'StoreManager',
-  CASHIER = 'Cashier',
-  CUSTOMER = 'Customer',
-  DELIVERY = 'Delivery',
+  ADMIN = 'admin',
+  TEACHER = 'teacher',
+  STUDENT = 'student',
 }
 
 @Entity({ name: 'users' })
@@ -26,7 +23,7 @@ export class User {
   @Column()
   lastName!: string;
 
-  @Column()
+  @Column({ unique: true })
   phone!: string;
 
   @Column({ type: 'text' })

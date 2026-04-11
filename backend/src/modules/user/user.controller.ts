@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -17,6 +18,12 @@ import { UserService } from './user.service';
 @ApiTags('Users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @ApiOperation({ summary: 'Login user' })
+  @Post('login')
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.userService.login(loginUserDto);
+  }
 
   @ApiOperation({ summary: 'Create user' })
   @Post()

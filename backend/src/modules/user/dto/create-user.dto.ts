@@ -28,11 +28,11 @@ export class CreateUserDto {
   @MaxLength(30)
   phone!: string;
 
-  @ApiProperty({ example: 'hashed_password_value' })
+  @ApiProperty({ example: 'StrongPass123!' })
   @IsString()
   @MinLength(8)
   @MaxLength(255)
-  passwordHash!: string;
+  password!: string;
 
   @ApiProperty({
     enum: UserRole,
