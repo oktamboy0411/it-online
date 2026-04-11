@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AppLayout } from "@/components/AppLayout";
+
 import { useClassesContext } from "@/context/ClassesContext";
 import { useNavigate } from "react-router-dom";
 import { Plus, Pencil, Users, Archive, FolderOpen } from "lucide-react";
@@ -52,7 +52,7 @@ const Directions = () => {
   };
 
   return (
-    <AppLayout title="Yo'nalishlar">
+    
       <div className="space-y-5">
         <div className="flex items-center justify-between animate-reveal">
           <p className="text-sm text-muted-foreground">
@@ -144,7 +144,7 @@ const Directions = () => {
           onArchive={handleArchive}
         />
       </div>
-    </AppLayout>
+    
   );
 };
 

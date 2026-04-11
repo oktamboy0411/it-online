@@ -9,7 +9,7 @@ import {
   Plus,
   Users,
 } from "lucide-react";
-import { AppLayout } from "@/components/AppLayout";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useClassesContext } from "@/context/ClassesContext";
@@ -33,7 +33,7 @@ const DirectionDetail = () => {
 
   if (!direction) {
     return (
-      <AppLayout title="Yo'nalish topilmadi">
+      
         <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
           <p>Bu yo'nalish mavjud emas.</p>
           <Button
@@ -44,7 +44,7 @@ const DirectionDetail = () => {
             Yo'nalishlarga qaytish
           </Button>
         </div>
-      </AppLayout>
+      
     );
   }
 
@@ -96,7 +96,7 @@ const DirectionDetail = () => {
   };
 
   return (
-    <AppLayout title={direction.name}>
+    
       <div className="space-y-5">
         <div className="flex items-center justify-between animate-reveal">
           <div className="flex items-center gap-3">
@@ -245,7 +245,7 @@ const DirectionDetail = () => {
           onArchive={handleArchiveGroup}
         />
       </div>
-    </AppLayout>
+    
   );
 };
 

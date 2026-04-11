@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AppLayout } from "@/components/AppLayout";
+
 import { useClassesContext } from "@/context/ClassesContext";
 import { useLocation, useNavigate, Outlet, useParams } from "react-router-dom";
 import { ArrowLeft, BookOpen, Users } from "lucide-react";
@@ -63,7 +63,7 @@ const ClassDetailLayout = () => {
 
   if (!direction || !selectedGroup) {
     return (
-      <AppLayout title="Guruh topilmadi">
+      
         <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
           <p>Bu guruh yoki yo'nalish mavjud emas.</p>
           <Button
@@ -78,7 +78,7 @@ const ClassDetailLayout = () => {
             Yo'nalishlarga qaytish
           </Button>
         </div>
-      </AppLayout>
+      
     );
   }
 
@@ -175,7 +175,7 @@ const ClassDetailLayout = () => {
   };
 
   return (
-    <AppLayout title={`${direction.name} - ${selectedGroup.name} guruh`}>
+    
       <div className="space-y-4">
         <div className="flex items-center justify-between animate-reveal">
           <div className="flex items-center gap-3">
@@ -276,7 +276,7 @@ const ClassDetailLayout = () => {
           onDeactivate={handleDeactivate}
         />
       </div>
-    </AppLayout>
+    
   );
 };
 

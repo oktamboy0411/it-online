@@ -1,4 +1,4 @@
-import { AppLayout } from "@/components/AppLayout";
+
 import { Upload, CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -20,7 +20,7 @@ const statusConfig = {
 
 const Assignments = () => {
   return (
-    <AppLayout title="Topshiriqlar">
+    
       <div className="space-y-4">
         {assignments.map((a, i) => {
           const sc = statusConfig[a.status as keyof typeof statusConfig];
@@ -57,7 +57,7 @@ const Assignments = () => {
           );
         })}
       </div>
-    </AppLayout>
+    
   );
 };
 

@@ -1,4 +1,4 @@
-import { AppLayout } from "@/components/AppLayout";
+
 import { Play, FileText, Download, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -21,7 +21,7 @@ const categoryColors: Record<string, string> = {
 
 const Lessons = () => {
   return (
-    <AppLayout title="Darslar">
+    
       <div className="space-y-6">
         <div className="flex items-center gap-2 flex-wrap">
           {["Barchasi", "Python", "Web", "Algoritmlar", "Database"].map((cat, i) => (
@@ -72,7 +72,7 @@ const Lessons = () => {
           ))}
         </div>
       </div>
-    </AppLayout>
+    
   );
 };
 

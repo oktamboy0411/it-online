@@ -1,4 +1,4 @@
-import { AppLayout } from "@/components/AppLayout";
+
 import { Bell, CheckCircle2, BookOpen, ClipboardList, Calendar } from "lucide-react";
 
 const notifications = [
@@ -11,7 +11,7 @@ const notifications = [
 
 const Notifications = () => {
   return (
-    <AppLayout title="Bildirishnomalar">
+    
       <div className="max-w-2xl space-y-3">
         {notifications.map((n, i) => (
           <div
@@ -31,7 +31,7 @@ const Notifications = () => {
           </div>
         ))}
       </div>
-    </AppLayout>
+    
   );
 };
 

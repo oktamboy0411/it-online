@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AppLayout } from "@/components/AppLayout";
+
 import { Users } from "lucide-react";
 
 const classes = [
@@ -121,7 +121,7 @@ const Schedule = () => {
   const currentSchedule = scheduleByClass[activeClass] || {};
 
   return (
-    <AppLayout title="Jadval">
+    
       <div className="space-y-5">
         {/* Class selector */}
         <div className="flex items-center gap-2 flex-wrap animate-reveal">
@@ -199,7 +199,7 @@ const Schedule = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
+    
   );
 };
 

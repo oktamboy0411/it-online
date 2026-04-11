@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AppLayout } from "@/components/AppLayout";
+
 import { Send, Users, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -25,7 +25,7 @@ const LiveClass = () => {
   const [input, setInput] = useState("");
 
   return (
-    <AppLayout title="Jonli dars">
+    
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[calc(100vh-8rem)]">
         {/* Chat area */}
         <div className="lg:col-span-3 bg-card rounded-xl border shadow-sm flex flex-col animate-reveal">
@@ -99,7 +99,7 @@ const LiveClass = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
+    
   );
 };
 

@@ -1,4 +1,4 @@
-import { AppLayout } from "@/components/AppLayout";
+
 import { Play, Clock, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -13,7 +13,7 @@ const courses = [
 
 const FreeCourses = () => {
   return (
-    <AppLayout title="Bepul kurslar">
+    
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
         {courses.map((course, i) => (
           <div
@@ -42,7 +42,7 @@ const FreeCourses = () => {
           </div>
         ))}
       </div>
-    </AppLayout>
+    
   );
 };
 

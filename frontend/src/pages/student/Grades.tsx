@@ -1,4 +1,4 @@
-import { AppLayout } from "@/components/AppLayout";
+
 
 const students = [
   { name: "Sardor Aliyev", dailyMarks: [85, 90, 78, 92, 88], avg: 86.6 },
@@ -27,7 +27,7 @@ function avgBadge(avg: number) {
 
 const Grades = () => {
   return (
-    <AppLayout title="Baholar">
+    
       <div className="bg-card rounded-xl border shadow-sm overflow-hidden animate-reveal">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -67,7 +67,7 @@ const Grades = () => {
           </table>
         </div>
       </div>
-    </AppLayout>
+    
   );
 };
 

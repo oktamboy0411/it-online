@@ -1,4 +1,4 @@
-import { AppLayout } from "@/components/AppLayout";
+
 import { useClassesContext } from "@/context/ClassesContext";
 import { useNavigate } from "react-router-dom";
 import { Archive, FolderOpen, Users } from "lucide-react";
@@ -8,7 +8,7 @@ const ArchivePage = () => {
   const navigate = useNavigate();
 
   return (
-    <AppLayout title="Arxiv">
+    
       <div className="space-y-5">
         <p className="text-sm text-muted-foreground animate-reveal">
           Faoliyati tugatilgan yo'nalishlar — jami {archivedDirections.length} ta
@@ -54,7 +54,7 @@ const ArchivePage = () => {
           </div>
         )}
       </div>
-    </AppLayout>
+    
   );
 };
 
