@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
+import { createAccessToken, hashPassword, verifyPassword } from '../../utils';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -32,7 +32,7 @@ export class UserService {
       throw new ConflictException('User with this phone already exists');
     }
 
-    const passwordHash = await bcrypt.hash(createUserDto.password, 10);
+    const passwordHash = await hashPassword(createUserDto.password);
     const user = this.userRepository.create({
       firstName: createUserDto.firstName,
       lastName: createUserDto.lastName,
@@ -57,7 +57,7 @@ export class UserService {
       throw new UnauthorizedException('Phone or password is incorrect');
     }
 
-    const isPasswordValid = await bcrypt.compare(
+    const isPasswordValid = await verifyPassword(
       loginUserDto.password,
       user.passwordHash,
     );
@@ -66,10 +66,8 @@ export class UserService {
       throw new UnauthorizedException('Phone or password is incorrect');
     }
 
-    const accessToken = await this.jwtService.signAsync({
+    const accessToken = await createAccessToken(this.jwtService, {
       sub: user.id,
-      role: user.role,
-      phone: user.phone,
     });
 
     return {
@@ -104,7 +102,7 @@ export class UserService {
     }
 
     if (updateUserDto.password) {
-      user.passwordHash = await bcrypt.hash(updateUserDto.password, 10);
+      user.passwordHash = await hashPassword(updateUserDto.password);
     }
 
     if (updateUserDto.firstName !== undefined) {
