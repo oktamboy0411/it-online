@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AppLayout } from "@/components/AppLayout";
 import { ClassesProvider } from "@/context/ClassesContext";
 import { getRoutesByRole, useUserRole } from "@/routers";
 import { AppRouteConfig } from "./types";
@@ -32,7 +33,7 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <>{routes.map(renderRoutes)}</>
+              <Route element={<AppLayout />}>{routes.map(renderRoutes)}</Route>
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
