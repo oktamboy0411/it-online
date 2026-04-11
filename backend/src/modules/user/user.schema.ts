@@ -2,13 +2,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Store } from '../store/store.schema';
 
 export enum UserRole {
   CEO = 'CEO',
@@ -41,14 +37,6 @@ export class User {
     enum: UserRole,
   })
   role!: UserRole;
-
-  @ManyToOne(() => Store, { nullable: true, onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'storeId' })
-  store?: Store | null;
-
-  @Column({ type: 'uuid', nullable: true })
-  @Index('IDX_users_storeId')
-  storeId?: string | null;
 
   @Column({ default: true })
   isActive!: boolean;

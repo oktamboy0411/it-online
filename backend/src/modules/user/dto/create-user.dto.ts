@@ -4,7 +4,6 @@ import {
   IsEnum,
   IsOptional,
   IsString,
-  IsUUID,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -41,17 +40,6 @@ export class CreateUserDto {
   })
   @IsEnum(UserRole)
   role!: UserRole;
-
-  @ApiProperty({
-    required: false,
-    nullable: true,
-    example: '6f4b53d0-98c7-4d76-8d02-4c56f57334f2',
-    description:
-      'StoreManager, Cashier, Delivery rollari uchun storeId yuborilishi kerak.',
-  })
-  @IsOptional()
-  @IsUUID()
-  storeId?: string | null;
 
   @ApiProperty({ example: true, required: false, default: true })
   @IsOptional()

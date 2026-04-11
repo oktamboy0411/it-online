@@ -1,14 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import {
-  CategoryModule,
-  HelloModule,
-  LocationModule,
-  ProductModule,
-  StoreModule,
-  SupplierModule,
-  UserModule,
-} from '../modules';
+import { HelloModule, UserModule } from '../modules';
 
 type ModuleSwaggerConfig = {
   module: Function;
@@ -26,31 +18,6 @@ const moduleSwaggerConfigs: ModuleSwaggerConfig[] = [
     module: UserModule,
     name: 'User Module API',
     path: 'docs/users',
-  },
-  {
-    module: CategoryModule,
-    name: 'Category Module API',
-    path: 'docs/categories',
-  },
-  {
-    module: ProductModule,
-    name: 'Product Module API',
-    path: 'docs/products',
-  },
-  {
-    module: StoreModule,
-    name: 'Store Module API',
-    path: 'docs/stores',
-  },
-  {
-    module: LocationModule,
-    name: 'Location Module API',
-    path: 'docs/locations',
-  },
-  {
-    module: SupplierModule,
-    name: 'Supplier Module API',
-    path: 'docs/suppliers',
   },
 ];
 
