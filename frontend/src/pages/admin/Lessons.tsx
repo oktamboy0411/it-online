@@ -1,5 +1,5 @@
 
-import { Play, FileText, Download, Clock } from "lucide-react";
+import { Play, FileText, Download, Clock, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const lessons = [
@@ -23,19 +23,25 @@ const Lessons = () => {
   return (
     
       <div className="space-y-6">
-        <div className="flex items-center gap-2 flex-wrap">
-          {["Barchasi", "Python", "Web", "Algoritmlar", "Database"].map((cat, i) => (
-            <button
-              key={cat}
-              className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                i === 0
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
+            {["Barchasi", "Python", "Web", "Algoritmlar", "Database"].map((cat, i) => (
+              <button
+                key={cat}
+                className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  i === 0
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          <Button className="shrink-0 gap-2">
+            <Plus className="h-4 w-4" />
+            Yangi dars
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

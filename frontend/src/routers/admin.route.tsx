@@ -41,4 +41,5 @@ export const adminRoutes: AppRouteConfig[] = [
     ],
   },
   { path: "/archive", element: <ArchivePage /> },
+  { path: "*", element: <Navigate to="/" replace /> },
 ];
