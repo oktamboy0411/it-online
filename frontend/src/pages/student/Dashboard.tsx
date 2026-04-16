@@ -2,18 +2,15 @@
 import { Users, BookOpen, ClipboardList, TrendingUp, ArrowUpRight } from "lucide-react";
 
 const stats = [
-  { label: "O'quvchilar", value: "247", change: "+12", icon: Users, colorClass: "stat-card-blue" },
-  { label: "Darslar", value: "34", change: "+3", icon: BookOpen, colorClass: "stat-card-green" },
-  { label: "Topshiriqlar", value: "128", change: "+8", icon: ClipboardList, colorClass: "stat-card-orange" },
-  { label: "O'rtacha ball", value: "78.4", change: "+2.1", icon: TrendingUp, colorClass: "stat-card-purple" },
+  { label: "Mening darslarim", value: "8", change: "+1", icon: BookOpen, colorClass: "stat-card-blue" },
+  { label: "Tugallangan", value: "3", change: "+1", icon: BookOpen, colorClass: "stat-card-green" },
+  { label: "Faol topshiriqlar", value: "5", change: "-2", icon: ClipboardList, colorClass: "stat-card-orange" },
+  { label: "O'rtacha baho", value: "85.4", change: "+1.2", icon: TrendingUp, colorClass: "stat-card-purple" },
 ];
 
 const recentActivity = [
-  { text: "Sardor Aliyev 5-darsga javob topshirdi", time: "5 daqiqa oldin", type: "assignment" },
-  { text: "Dilnoza Karimova yangi darsga yozildi", time: "12 daqiqa oldin", type: "enrollment" },
-  { text: "Javohir Toshmatov test yakunladi — 92 ball", time: "30 daqiqa oldin", type: "grade" },
-  { text: "Malika Raximova video darsni ko'rdi", time: "1 soat oldin", type: "lesson" },
-  { text: "Azizbek Nurmatov uy vazifasini yuklab oldi", time: "2 soat oldin", type: "download" },
+  { text: "Python asoslari darsidan uy vazifasi berildi", time: "1 soat oldin", type: "assignment" },
+  { text: "Siz Algoritmlar bo'yicha testni yakunladingiz (90 ball)", time: "Kecha", type: "grade" },
 ];
 
 const upcomingLessons = [

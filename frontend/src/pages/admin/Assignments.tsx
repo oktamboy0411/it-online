@@ -1,71 +1,34 @@
 
-import { Upload, CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { Upload, CheckCircle2, Clock, AlertCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const assignments = [
-  {
-    id: 1,
-    title: "Python: O'zgaruvchilar va turlar",
-    deadline: "2026-03-22",
-    status: "pending",
-    subject: "Python",
-  },
-  {
-    id: 2,
-    title: "HTML sahifa tuzish",
-    deadline: "2026-03-21",
-    status: "submitted",
-    subject: "Web",
-  },
-  {
-    id: 3,
-    title: "Sorting algoritmlari",
-    deadline: "2026-03-20",
-    status: "graded",
-    grade: 87,
-    subject: "Algoritmlar",
-  },
-  {
-    id: 4,
-    title: "CSS Flexbox loyihasi",
-    deadline: "2026-03-25",
-    status: "pending",
-    subject: "Web",
-  },
-  {
-    id: 5,
-    title: "SQL so'rovlar yozish",
-    deadline: "2026-03-19",
-    status: "overdue",
-    subject: "Database",
-  },
-  {
-    id: 6,
-    title: "JavaScript funksiyalar",
-    deadline: "2026-03-24",
-    status: "pending",
-    subject: "Web",
-  },
+  { id: 1, title: "Python: O'zgaruvchilar va turlar", deadline: "2026-03-22", status: "pending", subject: "Python", submitted: 18, total: 24 },
+  { id: 2, title: "HTML sahifa tuzish", deadline: "2026-03-21", status: "submitted", subject: "Web", submitted: 20, total: 22 },
+  { id: 3, title: "Sorting algoritmlari", deadline: "2026-03-20", status: "graded", subject: "Algoritmlar", submitted: 15, total: 15 },
+  { id: 4, title: "CSS Flexbox loyihasi", deadline: "2026-03-25", status: "pending", subject: "Web", submitted: 0, total: 30 },
+  { id: 5, title: "SQL so'rovlar yozish", deadline: "2026-03-19", status: "overdue", subject: "Database", submitted: 21, total: 25 },
+  { id: 6, title: "JavaScript funksiyalar", deadline: "2026-03-24", status: "pending", subject: "Web", submitted: 2, total: 24 },
 ];
 
 const statusConfig = {
   pending: {
-    label: "Kutilmoqda",
+    label: "Tekshirilmaydi",
     icon: Clock,
     className: "text-warning bg-warning/10",
   },
   submitted: {
-    label: "Topshirildi",
+    label: "Baholanmagan",
     icon: CheckCircle2,
     className: "text-success bg-success/10",
   },
   graded: {
-    label: "Baholandi",
+    label: "To'liq baholandi",
     icon: CheckCircle2,
     className: "text-primary bg-primary/10",
   },
   overdue: {
-    label: "Muddati o'tdi",
+    label: "Muddati o'tgan",
     icon: AlertCircle,
     className: "text-destructive bg-destructive/10",
   },
@@ -73,8 +36,14 @@ const statusConfig = {
 
 const Assignments = () => {
   return (
-    
-      <div className="space-y-4">
+    <div className="space-y-4 flex flex-col pt-2">
+      <div className="flex w-full justify-start mb-2">
+        <Button className="gap-2">
+          <Plus className="h-4 w-4" />
+          Yangi topshiriq qo'shish
+        </Button>
+      </div>
+      <div className="grid gap-4">
         {assignments.map((a, i) => {
           const sc = statusConfig[a.status as keyof typeof statusConfig];
           return (
@@ -99,31 +68,29 @@ const Assignments = () => {
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-3 shrink-0">
-                {a.status === "graded" && (
-                  <span className="text-sm font-semibold text-primary">
-                    {a.grade}/100
-                  </span>
-                )}
+              <div className="flex items-center gap-6 shrink-0">
+                <div className="flex flex-col items-center mr-2">
+                  <span className="text-xs text-muted-foreground mb-0.5">Topshirdi / Jami</span>
+                  <span className="text-sm font-semibold">{a.submitted} / {a.total}</span>
+                </div>
                 <span
                   className={`text-xs font-medium px-2.5 py-1 rounded-full ${sc.className}`}
                 >
                   {sc.label}
                 </span>
-                {a.status === "pending" && (
-                  <Button
-                    size="sm"
-                    className="gap-1.5 active:scale-[0.97] transition-transform"
-                  >
-                    <Upload className="h-3.5 w-3.5" /> Topshirish
-                  </Button>
-                )}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1.5 active:scale-[0.97] transition-transform"
+                >
+                  Ko'rish
+                </Button>
               </div>
             </div>
           );
         })}
       </div>
-    
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 import { LogOut, GraduationCap } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getSidebarDataByRole } from "@/data/sidebarData";
 import { useUserRole } from "@/routers";
 import {
@@ -20,8 +20,14 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
+  const navigate = useNavigate();
   const [role] = useUserRole();
   const { main: mainNav, bottom: bottomNav } = getSidebarDataByRole(role);
+
+  const handleLogout = () => {
+    window.localStorage.removeItem("it-online-role");
+    navigate("/login");
+  };
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
@@ -94,7 +100,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border p-3">
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground">
+        <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground">
           <LogOut className="h-[18px] w-[18px] shrink-0" />
           {!collapsed && <span>Chiqish</span>}
         </button>

@@ -2,18 +2,16 @@
 import { Users, BookOpen, ClipboardList, TrendingUp, ArrowUpRight } from "lucide-react";
 
 const stats = [
-  { label: "O'quvchilar", value: "247", change: "+12", icon: Users, colorClass: "stat-card-blue" },
-  { label: "Darslar", value: "34", change: "+3", icon: BookOpen, colorClass: "stat-card-green" },
-  { label: "Topshiriqlar", value: "128", change: "+8", icon: ClipboardList, colorClass: "stat-card-orange" },
-  { label: "O'rtacha ball", value: "78.4", change: "+2.1", icon: TrendingUp, colorClass: "stat-card-purple" },
+  { label: "O'quvchilarim", value: "112", change: "+5", icon: Users, colorClass: "stat-card-blue" },
+  { label: "Darslarim", value: "14", change: "+1", icon: BookOpen, colorClass: "stat-card-green" },
+  { label: "Bajarilayotgan topshiriqlar", value: "48", change: "+10", icon: ClipboardList, colorClass: "stat-card-orange" },
+  { label: "O'zlashtirish", value: "81%", change: "+3.2%", icon: TrendingUp, colorClass: "stat-card-purple" },
 ];
 
 const recentActivity = [
-  { text: "Sardor Aliyev 5-darsga javob topshirdi", time: "5 daqiqa oldin", type: "assignment" },
-  { text: "Dilnoza Karimova yangi darsga yozildi", time: "12 daqiqa oldin", type: "enrollment" },
-  { text: "Javohir Toshmatov test yakunladi — 92 ball", time: "30 daqiqa oldin", type: "grade" },
-  { text: "Malika Raximova video darsni ko'rdi", time: "1 soat oldin", type: "lesson" },
-  { text: "Azizbek Nurmatov uy vazifasini yuklab oldi", time: "2 soat oldin", type: "download" },
+  { text: "Javohir Toshmatov 3-amaliy ishni topshirdi", time: "10 daqiqa oldin", type: "assignment" },
+  { text: "Dilnoza Karimova yangi darsingizga yozildi", time: "45 daqiqa oldin", type: "enrollment" },
+  { text: "Sardor Aliyev test yakunladi — 92 ball", time: "1 soat oldin", type: "grade" },
 ];
 
 const upcomingLessons = [
