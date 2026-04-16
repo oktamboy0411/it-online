@@ -26,6 +26,14 @@ export function setupSwagger(app: INestApplication): void {
     .setTitle('LINKO Backend API')
     .setDescription('General API documentation')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token',
+    )
     .build();
 
   const fullDocument = SwaggerModule.createDocument(app, baseConfig);
