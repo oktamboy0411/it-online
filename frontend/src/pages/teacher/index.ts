@@ -1,12 +1,14 @@
 export * from "./Archive";
-export * from "./Assignments";
 export * from "./ClassDetail";
-export * from "./Dashboard";
 export * from "./DirectionDetail";
 export * from "./Directions";
-export * from "./FreeCourses";
-export * from "./Grades";
-export * from "./Lessons";
-export * from "./LiveClass";
-export * from "./Notifications";
-export * from "./Schedule";
+export {
+  Assignments,
+  Dashboard,
+  FreeCourses,
+  Grades,
+  Lessons,
+  LiveClass,
+  Notifications,
+  Schedule,
+} from "../shared";
